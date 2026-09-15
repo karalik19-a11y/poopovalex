@@ -141,7 +141,8 @@ async def on_message(message: Message):
     if random.random() > ROAST_CHANCE:
         return
 
-    await asyncio.sleep(random.uniform(1.5, 4.0))
+    # Минимальная пауза: бот отвечает почти сразу после генерации ответа.
+    await asyncio.sleep(random.uniform(0.15, 0.45))
 
     username = message.from_user.username or message.from_user.first_name
     roast = await generate_roast(message.text or "", username)
@@ -187,8 +188,6 @@ async def main():
     webhook_url = WEBHOOK_URL.rstrip("/") + WEBHOOK_PATH
 
     try:
-        # ВАЖНО: polling здесь больше не используется.
-        # Webhook исключает конфликт getUpdates между экземплярами Render.
         await bot.delete_webhook(drop_pending_updates=True)
         await bot.set_webhook(webhook_url, drop_pending_updates=True)
         print(f"Telegram webhook set: {webhook_url}")
