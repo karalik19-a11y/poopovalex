@@ -109,6 +109,10 @@ async def main():
     print("Тролль-бот запускается...")
     runner = await run_web_server()
     try:
+        # Remove an old Telegram webhook before switching to long polling.
+        # This is harmless when no webhook is configured.
+        await bot.delete_webhook(drop_pending_updates=True)
+        print("Telegram webhook cleared. Starting polling...")
         await dp.start_polling(bot)
     finally:
         await runner.cleanup()
