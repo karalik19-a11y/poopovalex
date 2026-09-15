@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: poopovalex-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: ROAST_CHANCE
+        value: "0.20"
